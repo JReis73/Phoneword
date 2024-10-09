@@ -30,7 +30,20 @@
         {
             if (await this.DisplayAlert("Dial a Number", "Would you like to call " + translatedNumber + "?", "Yes", "No"))
             {
-                //TODO Dial the phone
+                try
+                {
+                    if (PhoneDialer.Default.IsSupported)
+                        PhoneDialer.Default.Open(translatedNumber);
+                }
+                catch (ArgumentNullException)
+                {
+                    await DisplayAlert("Unable to dial", "Phone number was not valid.", "OK");
+                }
+                catch (Exception)
+                {
+                    //Other error has occurred.
+                    await DisplayAlert("Unable to dial", "An unexpected error has occurred.", "OK");
+                }
             }
         }
     }
